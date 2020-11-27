@@ -16,3 +16,14 @@ create table instructor
     constraint instructor_detail_id_fk foreign key (instructor_detail_id)
         references instructor_detail (id)
 ) engine = InnoDB;
+
+create table course
+(
+    id            int(11) not null primary key auto_increment,
+    title         varchar(128) default null,
+    instructor_id int(11)      default null,
+    unique key title_unique (title),
+    constraint instructor_id_fk foreign key (instructor_id)
+        references instructor (id)
+        on delete no action on update no action
+) engine = InnoDB;

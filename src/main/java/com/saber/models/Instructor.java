@@ -1,12 +1,14 @@
 package com.saber.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "instructor")
-@NamedQuery(name = "Instructor.findAll",query = "SELECT i FROM Instructor i")
-@NamedQuery(name = "Instructor.findById",query = "SELECT i FROM Instructor i where i.id=:id")
+@NamedQuery(name = "Instructor.findAll", query = "SELECT i FROM Instructor i")
+@NamedQuery(name = "Instructor.findById", query = "SELECT i FROM Instructor i where i.id=:id")
 public class Instructor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +20,12 @@ public class Instructor {
     @Column(name = "email")
     private String email;
     @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "instructor_detail_id",referencedColumnName = "id")
+    @JoinColumn(name = "instructor_detail_id", referencedColumnName = "id")
     private InstructorDetail instructorDetail;
+    @OneToMany(mappedBy = "instructor",
+            cascade = {CascadeType.PERSIST,CascadeType.DETACH,
+            CascadeType.REFRESH,CascadeType.REFRESH})
+    private List<Course> courses;
 
     public Integer getId() {
         return id;
@@ -61,6 +67,18 @@ public class Instructor {
         this.instructorDetail = instructorDetail;
     }
 
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void addCourse(Course course) {
+        if (courses == null) {
+            courses = new ArrayList<>();
+        }
+        courses.add(course);
+        course.setInstructor(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,6 +104,7 @@ public class Instructor {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", instructorDetail=" + instructorDetail +
+                ", courses=" + courses +
                 '}';
     }
 }

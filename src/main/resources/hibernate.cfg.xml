@@ -16,5 +16,6 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <mapping class="com.saber.models.InstructorDetail"/>
         <mapping class="com.saber.models.Instructor"/>
+        <mapping class="com.saber.models.Course"/>
     </session-factory>
 </hibernate-configuration>
