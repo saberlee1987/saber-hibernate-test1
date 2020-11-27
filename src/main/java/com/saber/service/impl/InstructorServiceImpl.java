@@ -1,5 +1,6 @@
 package com.saber.service.impl;
 
+import com.saber.models.Course;
 import com.saber.models.Instructor;
 import com.saber.models.InstructorDetail;
 import com.saber.service.InstructorService;
@@ -64,5 +65,29 @@ public class InstructorServiceImpl implements InstructorService {
                 return false;
             }
         }
+    }
+
+    @Override
+    public void addCourseToInstructor(Integer id, List<Course> courseList) {
+        Session session = HibernateUtil.openSession();
+        Transaction transaction = session.beginTransaction();
+        Instructor instructor = session.find(Instructor.class, id);
+        if (instructor != null) {
+            for (Course course : courseList) {
+                instructor.addCourse(course);
+                session.save(course);
+            }
+        }
+
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
+    public Course findCourseById(Integer id) {
+        Session session = HibernateUtil.openSession();
+        Course course =session.find(Course.class,id);
+        session.close();
+        return course;
     }
 }

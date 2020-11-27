@@ -3,11 +3,9 @@ package com.saber.start;
 import com.saber.models.Course;
 import com.saber.models.Instructor;
 import com.saber.models.InstructorDetail;
-import com.saber.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.saber.service.InstructorService;
+import com.saber.service.impl.InstructorServiceImpl;
+
 import java.util.List;
 
 public class MainApp {
@@ -26,28 +24,25 @@ public class MainApp {
 //                ) );
 //
 //        addCourseToInstructor(4,courseList);
+
+        InstructorService instructorService =new InstructorServiceImpl();
+        System.out.println(findCourseById(3,instructorService));
     }
 
-    private static void deleteInstructorDetail(Integer id) {
-        Session session = HibernateUtil.openSession();
-        Transaction transaction = session.beginTransaction();
-        InstructorDetail instructorDetail = session.find(InstructorDetail.class, id);
-        instructorDetail.getInstructor().setInstructorDetail(null);
-        session.remove(instructorDetail);
-        transaction.commit();
+    private static void deleteInstructorDetail(Integer id, InstructorService instructorService) {
+        boolean flag= instructorService.deleteInstructorDetailById(id);
+        if (flag){
+            System.out.println("Instructor Detail ====> Deleted");
+        }
 
     }
 
-    private static Instructor findInstructorById(Integer id) {
-        Session session = HibernateUtil.openSession();
-        Instructor instructor = session.find(Instructor.class, id);
-        session.close();
-        return instructor;
+    private static Instructor findInstructorById(Integer id,InstructorService instructorService) {
+        return instructorService.findById(id);
     }
 
-    private static void addInstructorAndInstructorDetail() {
-        Session session = HibernateUtil.openSession();
-        Transaction transaction = session.beginTransaction();
+    private static void addInstructorAndInstructorDetail(InstructorService instructorService) {
+
         Instructor instructor = new Instructor();
         instructor.setFirstName("saber66");
         instructor.setLastName("Azizi");
@@ -60,28 +55,21 @@ public class MainApp {
 
         instructor.setInstructorDetail(detail);
 
+        instructorService.addInstructor(instructor);
 
-        session.save(instructor);
-        transaction.commit();
 
         System.out.println("add to DataBase ...............");
 
-        session.close();
+
 
     }
 
-    private static void addCourseToInstructor(Integer id, List<Course> courseList) {
-        Session session = HibernateUtil.openSession();
-        Transaction transaction = session.beginTransaction();
-        Instructor instructor = session.find(Instructor.class, id);
-        if (instructor != null) {
-            for (Course course : courseList) {
-                instructor.addCourse(course);
-                session.save(course);
-            }
-        }
+    private static void addCourseToInstructor(Integer id, List<Course> courseList,InstructorService instructorService) {
+        instructorService.addCourseToInstructor(id,courseList);
 
-        transaction.commit();
-        session.close();
+    }
+
+    private static Course findCourseById(Integer id, InstructorService instructorService){
+        return instructorService.findCourseById(id);
     }
 }
