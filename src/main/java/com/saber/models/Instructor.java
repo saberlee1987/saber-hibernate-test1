@@ -22,7 +22,7 @@ public class Instructor {
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "instructor_detail_id", referencedColumnName = "id")
     private InstructorDetail instructorDetail;
-    @OneToMany(mappedBy = "instructor",
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "instructor",
             cascade = {CascadeType.PERSIST,CascadeType.DETACH,
             CascadeType.REFRESH,CascadeType.REFRESH})
     private List<Course> courses;

@@ -27,3 +27,13 @@ create table course
         references instructor (id)
         on delete no action on update no action
 ) engine = InnoDB;
+create table review
+(
+    id        int(11) not null primary key auto_increment,
+    comment   varchar(256) default null,
+    course_id int          default null,
+    constraint course_id_fk foreign key (course_id)
+        references course (id)
+        on delete no action on update no action
+
+) engine = InnoDB;

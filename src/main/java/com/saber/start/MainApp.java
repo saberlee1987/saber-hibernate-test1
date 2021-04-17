@@ -3,9 +3,13 @@ package com.saber.start;
 import com.saber.models.Course;
 import com.saber.models.Instructor;
 import com.saber.models.InstructorDetail;
+import com.saber.models.Review;
 import com.saber.service.InstructorService;
 import com.saber.service.impl.InstructorServiceImpl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class MainApp {
@@ -14,6 +18,16 @@ public class MainApp {
         // Instructor instructor =findInstructorById(4);
         // System.out.println(instructor);
         // deleteInstructorDetail(1);
+
+//        Course course = new Course();
+//        course.setTitle("Java Programming");
+//        course.addReview(new Review("I Love Java"));
+//        course.addReview(new Review("I am good developer"));
+//        course.addReview(new Review("I am  hayypy study this course"));
+//        List<Course> courses = Arrays.asList(course);
+
+
+
 //        List<Course> courseList = new ArrayList<>(
 //                Arrays.asList(
 //                        new Course("Java SE"),
@@ -23,10 +37,11 @@ public class MainApp {
 //                        new Course("Spring Boot")
 //                ) );
 //
-//        addCourseToInstructor(4,courseList);
 
         InstructorService instructorService =new InstructorServiceImpl();
-        System.out.println(findCourseById(3,instructorService));
+//        addCourseToInstructor(1,courses,instructorService);
+//        addInstructorAndInstructorDetail(instructorService);
+        System.out.println(findCourseById(1,instructorService));
     }
 
     private static void deleteInstructorDetail(Integer id, InstructorService instructorService) {
@@ -51,7 +66,6 @@ public class MainApp {
         InstructorDetail detail = new InstructorDetail();
         detail.setYoutubeChannel("saber66@youtube.com");
         detail.setHobby("Java Channel");
-
 
         instructor.setInstructorDetail(detail);
 

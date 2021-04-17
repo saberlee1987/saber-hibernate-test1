@@ -87,6 +87,7 @@ public class InstructorServiceImpl implements InstructorService {
     public Course findCourseById(Integer id) {
         Session session = HibernateUtil.openSession();
         Course course =session.find(Course.class,id);
+        System.out.println(course.getReviewList().size());
         session.close();
         return course;
     }
