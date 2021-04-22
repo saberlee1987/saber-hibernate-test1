@@ -1,9 +1,6 @@
 package com.saber.start;
 
-import com.saber.models.Course;
-import com.saber.models.Instructor;
-import com.saber.models.InstructorDetail;
-import com.saber.models.Review;
+import com.saber.models.*;
 import com.saber.service.InstructorService;
 import com.saber.service.impl.InstructorServiceImpl;
 
@@ -41,7 +38,10 @@ public class MainApp {
         InstructorService instructorService =new InstructorServiceImpl();
 //        addCourseToInstructor(1,courses,instructorService);
 //        addInstructorAndInstructorDetail(instructorService);
-        System.out.println(findCourseById(1,instructorService));
+       // System.out.println(findCourseById(1,instructorService));
+        //addCourse(instructorService);
+        Student student = findStudent(3,instructorService);
+        System.out.println(student);
     }
 
     private static void deleteInstructorDetail(Integer id, InstructorService instructorService) {
@@ -85,5 +85,19 @@ public class MainApp {
 
     private static Course findCourseById(Integer id, InstructorService instructorService){
         return instructorService.findCourseById(id);
+    }
+    private static void addCourse(InstructorService instructorService){
+        Course course = new Course();
+        course.setTitle("Java EE Programming");
+
+        List<Student> studentList = new ArrayList<>();
+        studentList.add(new Student("Saber","Azizi","saber66@yahoo.com"));
+        studentList.add(new Student("Bruce","Lee","bruce40@yahoo.com"));
+        studentList.add(new Student("Jackie","Chan","jackie54@yahoo.com"));
+        studentList.add(new Student("jet","li","jet62@yahoo.com"));
+        instructorService.addCourse(course,studentList);
+    }
+    private static Student findStudent(Integer id,InstructorService instructorService){
+        return instructorService.findStudent(id);
     }
 }

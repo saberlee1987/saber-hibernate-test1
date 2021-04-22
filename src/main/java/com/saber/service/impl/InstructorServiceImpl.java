@@ -3,6 +3,7 @@ package com.saber.service.impl;
 import com.saber.models.Course;
 import com.saber.models.Instructor;
 import com.saber.models.InstructorDetail;
+import com.saber.models.Student;
 import com.saber.service.InstructorService;
 import com.saber.util.HibernateUtil;
 import org.hibernate.Session;
@@ -86,9 +87,31 @@ public class InstructorServiceImpl implements InstructorService {
     @Override
     public Course findCourseById(Integer id) {
         Session session = HibernateUtil.openSession();
-        Course course =session.find(Course.class,id);
+        Course course = session.find(Course.class, id);
         System.out.println(course.getReviewList().size());
         session.close();
         return course;
+    }
+
+    @Override
+    public void addCourse(Course course, List<Student> studentList) {
+        Session session = HibernateUtil.openSession();
+        Transaction transaction = session.beginTransaction();
+        studentList.forEach(student -> {
+            session.save(student);
+            course.addStudent(student);
+        });
+        session.save(course);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
+    public Student findStudent(Integer id) {
+        Session session = HibernateUtil.openSession();
+        Student student = session.find(Student.class, id);
+        student.getCourseList().size();
+        session.close();
+        return student;
     }
 }

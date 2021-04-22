@@ -18,5 +18,6 @@
         <mapping class="com.saber.models.Instructor"/>
         <mapping class="com.saber.models.Course"/>
         <mapping class="com.saber.models.Review"/>
+        <mapping class="com.saber.models.Student"/>
     </session-factory>
 </hibernate-configuration>

@@ -19,9 +19,24 @@ public class Course {
     @JoinColumn(name = "instructor_id")
     private Instructor instructor;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private List<Review> reviewList;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+            CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(name = "course_student"
+            , joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id"))
+    private List<Student> studentList;
+
+    public List<Student> getStudentList() {
+        return studentList;
+    }
+
+    public void setStudentList(List<Student> studentList) {
+        this.studentList = studentList;
+    }
 
     public Course() {
     }
@@ -69,12 +84,22 @@ public class Course {
         this.reviewList.add(review);
     }
 
+    public void addStudent(Student student) {
+        if (studentList == null) {
+            this.studentList = new ArrayList<>();
+        }
+        this.studentList.add(student);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        return Objects.equals(id, course.id) && Objects.equals(title, course.title) && Objects.equals(instructor, course.instructor) && Objects.equals(reviewList, course.reviewList);
+        return Objects.equals(id, course.id) &&
+                Objects.equals(title, course.title)
+                && Objects.equals(instructor, course.instructor)
+                && Objects.equals(reviewList, course.reviewList);
     }
 
     @Override
@@ -87,7 +112,6 @@ public class Course {
         return "Course{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                 ", reviewList=" + reviewList +
-                '}';
+                  '}';
     }
 }

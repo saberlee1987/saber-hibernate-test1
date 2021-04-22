@@ -37,3 +37,19 @@ create table review
         on delete no action on update no action
 
 ) engine = InnoDB;
+
+create table student
+(
+    id         int(11) not null primary key auto_increment,
+    first_name varchar(50) default null,
+    last_name  varchar(65) default null,
+    email      varchar(45) default null
+) engine = InnoDB;
+
+create table course_student
+(
+    course_id  int(11) not null,
+    student_id int(11) not null,
+    constraint fk_course_id foreign key (course_id) references course (id),
+    constraint fk_student_id foreign key (student_id) references student (id)
+) engine = InnoDB;
